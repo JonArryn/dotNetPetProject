@@ -3,7 +3,7 @@ using System;
 // the ourAnimals array will store the following:
 string animalSpecies = "";
 string animalID = "";
-int? animalAge = new int();
+string animalAge = "";
 string animalPhysicalDescription = "";
 string animalPersonalityDescription = "";
 string animalNickname = "";
@@ -26,7 +26,7 @@ for (int i = 0; i < maxPets; i++)
         case 0:
             animalSpecies = "dog";
             animalID = "d1";
-            animalAge = 2;
+            animalAge = "";
             animalPhysicalDescription =
                 "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken.";
             animalPersonalityDescription =
@@ -37,7 +37,7 @@ for (int i = 0; i < maxPets; i++)
         case 1:
             animalSpecies = "dog";
             animalID = "d2";
-            animalAge = 9;
+            animalAge = "";
             animalPhysicalDescription =
                 "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
             animalPersonalityDescription =
@@ -48,7 +48,7 @@ for (int i = 0; i < maxPets; i++)
         case 2:
             animalSpecies = "cat";
             animalID = "c3";
-            animalAge = 1;
+            animalAge = "";
             animalPhysicalDescription =
                 "small white female weighing about 8 pounds. litter box trained.";
             animalPersonalityDescription = "friendly";
@@ -58,7 +58,7 @@ for (int i = 0; i < maxPets; i++)
         case 3:
             animalSpecies = "cat";
             animalID = "c4";
-            animalAge = null;
+            animalAge = "";
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
@@ -67,7 +67,7 @@ for (int i = 0; i < maxPets; i++)
         default:
             animalSpecies = "";
             animalID = "";
-            animalAge = null;
+            animalAge = "";
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
@@ -175,12 +175,12 @@ do
                     readResult = Console.ReadLine();
                     if (int.TryParse(readResult, out numericAge))
                     {
-                        animalAge = int.Parse(readResult);
+                        animalAge = readResult;
                         validEntry = true;
                     }
                     else if (readResult == "?")
                     {
-                        animalAge = null;
+                        animalAge = "?";
                         validEntry = true;
                     }
                     else
@@ -267,24 +267,31 @@ do
             break;
 
         case "3":
-            // Ensure animal ages and physical descriptions are complete
             for (int i = 0; i < maxPets; i++)
             {
-                if (ourAnimals[i, 2] == null)
+                do
                 {
-                    bool validEntry = false;
-                    int newAge = new int();
-                    do
+                    int numericAge = new int();
+
+                    Console.WriteLine($"Enter an age for {ourAnimals[i, 0]}");
+                    readResult = Console.ReadLine()?.ToLower();
+                    if (int.TryParse(readResult, out numericAge))
                     {
-                        Console.WriteLine($"Enter an age for {ourAnimals[i, 0]}");
-                        readResult = Console.ReadLine();
-                        if (int.TryParse(readResult, out newAge)) { }
-                    } while (!validEntry);
-                }
+                        ourAnimals[i, 2] = "Age: " + readResult;
+                    }
+                    else if (readResult == "exit")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine(
+                            $"Please provide a valid numeric age for {ourAnimals[i, 0]}"
+                        );
+                        Console.WriteLine("Or type exit to quit to main menu");
+                    }
+                } while (ourAnimals[i, 2] == "Age: " || ourAnimals[i, 2] == "Age: ?");
             }
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
-            Console.WriteLine("Press the Enter key to continue.");
-            readResult = Console.ReadLine();
             break;
 
         case "4":
