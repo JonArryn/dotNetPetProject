@@ -1,7 +1,9 @@
+using System;
+
 // the ourAnimals array will store the following:
 string animalSpecies = "";
 string animalID = "";
-string animalAge = "";
+int? animalAge = new int();
 string animalPhysicalDescription = "";
 string animalPersonalityDescription = "";
 string animalNickname = "";
@@ -24,7 +26,7 @@ for (int i = 0; i < maxPets; i++)
         case 0:
             animalSpecies = "dog";
             animalID = "d1";
-            animalAge = "2";
+            animalAge = 2;
             animalPhysicalDescription =
                 "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken.";
             animalPersonalityDescription =
@@ -35,7 +37,7 @@ for (int i = 0; i < maxPets; i++)
         case 1:
             animalSpecies = "dog";
             animalID = "d2";
-            animalAge = "9";
+            animalAge = 9;
             animalPhysicalDescription =
                 "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
             animalPersonalityDescription =
@@ -46,7 +48,7 @@ for (int i = 0; i < maxPets; i++)
         case 2:
             animalSpecies = "cat";
             animalID = "c3";
-            animalAge = "1";
+            animalAge = 1;
             animalPhysicalDescription =
                 "small white female weighing about 8 pounds. litter box trained.";
             animalPersonalityDescription = "friendly";
@@ -56,7 +58,7 @@ for (int i = 0; i < maxPets; i++)
         case 3:
             animalSpecies = "cat";
             animalID = "c4";
-            animalAge = "?";
+            animalAge = null;
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
@@ -65,7 +67,7 @@ for (int i = 0; i < maxPets; i++)
         default:
             animalSpecies = "";
             animalID = "";
-            animalAge = "";
+            animalAge = null;
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
@@ -105,12 +107,6 @@ do
         menuSelection = readResult.ToLower();
     }
 
-    //Console.WriteLine($"You selected menu option {menuSelection}.");
-    //Console.WriteLine("Press the Enter key to continue");
-
-    // pause code execution
-    //readResult = Console.ReadLine();
-
     switch (menuSelection)
     {
         case "1":
@@ -119,7 +115,6 @@ do
             {
                 if (ourAnimals[i, 0] != "ID #: ")
                 {
-                    Console.WriteLine();
                     for (int j = 0; j < 6; j++)
                     {
                         Console.WriteLine(ourAnimals[i, j]);
@@ -147,6 +142,7 @@ do
                     $"We currently have {petCount} pets that need homes. We can manage {(maxPets - petCount)} more."
                 );
             }
+
             while (anotherPet == "y" && petCount < maxPets)
             {
                 bool validEntry = false;
@@ -173,21 +169,25 @@ do
                 animalID = animalSpecies.Substring(0, 1) + (petCount + 1).ToString();
                 do
                 {
-                    int petAge;
-                    Console.WriteLine("Enter the pet's age or enter ? if unknown");
+                    int numericAge = new int();
+
+                    Console.WriteLine("Enter the pet's age using a number, if unknown enter ?");
                     readResult = Console.ReadLine();
-                    if (readResult != null)
+                    if (int.TryParse(readResult, out numericAge))
                     {
-                        animalAge = readResult;
-                        if (animalAge != "?")
-                        {
-                            validEntry = int.TryParse(animalAge, out petAge);
-                        }
+                        animalAge = int.Parse(readResult);
+                        validEntry = true;
+                    }
+                    else if (readResult == "?")
+                    {
+                        animalAge = null;
+                        validEntry = true;
+                    }
+                    else
+                    {
+                        validEntry = false;
                     }
                 } while (validEntry == false);
-                // increment petCount (the array is zero-based, so we increment the counter after adding to the array)
-                petCount = petCount + 1;
-                // check maxPet limit
 
                 do
                 {
@@ -240,6 +240,9 @@ do
                 ourAnimals[petCount, 5] = "Personality: " + animalPersonalityDescription;
                 anotherPet = "n";
             }
+            // increment petCount (the array is zero-based, so we increment the counter after adding to the array)
+            petCount = petCount + 1;
+            // check maxPet limit
             if (petCount < maxPets)
             {
                 // another pet?
@@ -265,6 +268,20 @@ do
 
         case "3":
             // Ensure animal ages and physical descriptions are complete
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 2] == null)
+                {
+                    bool validEntry = false;
+                    int newAge = new int();
+                    do
+                    {
+                        Console.WriteLine($"Enter an age for {ourAnimals[i, 0]}");
+                        readResult = Console.ReadLine();
+                        if (int.TryParse(readResult, out newAge)) { }
+                    } while (!validEntry);
+                }
+            }
             Console.WriteLine("Challenge Project - please check back soon to see progress.");
             Console.WriteLine("Press the Enter key to continue.");
             readResult = Console.ReadLine();
