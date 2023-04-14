@@ -27,8 +27,8 @@ for (int i = 0; i < maxPets; i++)
             animalSpecies = "dog";
             animalID = "d1";
             animalAge = "";
-            animalPhysicalDescription =
-                "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken.";
+            animalPhysicalDescription = "";
+            // "medium sized cream colored female golden retriever weighing about 65 pounds. housebroken.";
             animalPersonalityDescription =
                 "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.";
             animalNickname = "lola";
@@ -38,8 +38,8 @@ for (int i = 0; i < maxPets; i++)
             animalSpecies = "dog";
             animalID = "d2";
             animalAge = "";
-            animalPhysicalDescription =
-                "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
+            animalPhysicalDescription = "";
+            // "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
             animalPersonalityDescription =
                 "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.";
             animalNickname = "loki";
@@ -49,8 +49,8 @@ for (int i = 0; i < maxPets; i++)
             animalSpecies = "cat";
             animalID = "c3";
             animalAge = "";
-            animalPhysicalDescription =
-                "small white female weighing about 8 pounds. litter box trained.";
+            animalPhysicalDescription = "";
+            // "small white female weighing about 8 pounds. litter box trained.";
             animalPersonalityDescription = "friendly";
             animalNickname = "Puss";
             break;
@@ -267,38 +267,118 @@ do
             break;
 
         case "3":
+            // ensure that animal age and physical descritions are complete
             for (int i = 0; i < maxPets; i++)
             {
-                do
-                {
-                    int numericAge = new int();
+                bool petAgeValid = new bool();
 
-                    Console.WriteLine($"Enter an age for {ourAnimals[i, 0]}");
-                    readResult = Console.ReadLine()?.ToLower();
-                    if (int.TryParse(readResult, out numericAge))
+                if (ourAnimals[i, 2] == "Age: " || ourAnimals[i, 2] == "Age: ?")
+                {
+                    petAgeValid = false;
+                    do
                     {
-                        ourAnimals[i, 2] = "Age: " + readResult;
-                    }
-                    else if (readResult == "exit")
+                        int numericAge = new int();
+
+                        Console.WriteLine($"Enter an age for {ourAnimals[i, 0]}");
+                        readResult = Console.ReadLine()?.ToLower();
+                        if (int.TryParse(readResult, out numericAge))
+                        {
+                            ourAnimals[i, 2] = "Age: " + readResult;
+                            petAgeValid = true;
+                        }
+                        else if (readResult == "exit")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine(
+                                $"Please provide a valid numeric age for {ourAnimals[i, 0]}"
+                            );
+                        }
+                    } while (!petAgeValid);
+                }
+                bool petPhysicalValid = new bool();
+                if (
+                    ourAnimals[i, 4] == "Physical description: "
+                    || ourAnimals[i, 4] == "tbd"
+                    || ourAnimals[i, 4] == null
+                )
+                {
+                    petPhysicalValid = false;
+                    do
                     {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine(
-                            $"Please provide a valid numeric age for {ourAnimals[i, 0]}"
-                        );
-                        Console.WriteLine("Or type exit to quit to main menu");
-                    }
-                } while (ourAnimals[i, 2] == "Age: " || ourAnimals[i, 2] == "Age: ?");
+                        Console.WriteLine($"Enter physical description for {ourAnimals[i, 0]}");
+
+                        readResult = Console.ReadLine();
+                        if (readResult != "" && readResult != null)
+                        {
+                            string entry = readResult.ToLower();
+                            if (entry == "exit")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                ourAnimals[i, 4] = readResult;
+                                petPhysicalValid = true;
+                            }
+                        }
+                    } while (!petPhysicalValid);
+                }
+                Console.WriteLine(
+                    "All ages and physical descriptions for animals are valid and complete"
+                );
             }
             break;
 
         case "4":
             // Ensure animal nicknames and personality descriptions are complete
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
-            Console.WriteLine("Press the Enter key to continue.");
-            readResult = Console.ReadLine();
+            for (int i = 0; i < maxPets; i++)
+            {
+                bool petNicknameValid = new bool();
+                string currentNickname = ourAnimals[i, 3];
+                if (currentNickname == "Nickname: " || currentNickname == "tbd")
+                {
+                    do
+                    {
+                        petNicknameValid = false;
+                        Console.WriteLine($"Please enter a nickname for {ourAnimals[i, 0]}");
+                        readResult = Console.ReadLine()?.Trim();
+                        if (readResult == null || readResult == "")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            ourAnimals[i, 3] = readResult;
+                            petNicknameValid = true;
+                        }
+                    } while (!petNicknameValid);
+                }
+                bool petPersonalityValid = new bool();
+                string currentPersonality = ourAnimals[i, 5];
+                if (currentPersonality == "Personality: " || currentPersonality == "tbd")
+                {
+                    do
+                    {
+                        petPersonalityValid = false;
+                        Console.WriteLine(
+                            $"Please enter a personality description for {ourAnimals[i, 0]}"
+                        );
+                        readResult = Console.ReadLine()?.Trim();
+                        if (readResult == null || readResult == "")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            ourAnimals[i, 5] = readResult;
+                            petPersonalityValid = true;
+                        }
+                    } while (!petPersonalityValid);
+                }
+            }
             break;
 
         case "5":
